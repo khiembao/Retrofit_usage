@@ -10,7 +10,7 @@ import com.baokhiem.retrofit_usage.databinding.ItemTodoBinding
 class TodoAdapter: RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
     inner class TodoViewHolder(val binding: ItemTodoBinding): RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallBack = object: DiffUtil.ItemCallback<Todo>(){
+    private val diffCallBack = object : DiffUtil.ItemCallback<Todo>(){
         override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
             return oldItem.id == newItem.id
         }

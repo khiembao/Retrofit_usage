@@ -19,17 +19,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        setUpRecyclerView()
 
         lifecycleScope.launchWhenCreated {
             binding.progressBar.isVisible = true
             val response = try {
                 RetrofitInstance.api.getTodos()
             } catch (e: IOException) {
-                Log.e(TAG, "ioexcept")
+                Log.e(TAG, "ioException")
+                binding.progressBar.isVisible = false
+                return@launchWhenCreated
             } catch (e: HttpException) {
-
+                Log.e(TAG, "HTTPException")
+                binding.progressBar.isVisible = false
+                return@launchWhenCreated
             }
+            if (response.isSuccessful && response.body()!=null){
+                todoAdapter.todos = response.body()!!
+            } else {
+                Log.e(TAG, "response not successful")
+            }
+            binding.progressBar.isVisible = false
         }
     }
 
